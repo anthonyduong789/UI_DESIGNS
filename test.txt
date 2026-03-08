@@ -1,0 +1,36 @@
+
+{% schema %}
+{
+"name": "gallery-showcase",
+"tag": "section",
+"class": "section",
+
+"settings": [
+    {
+      "type": "text",
+      "id": "gallery_title",
+      "label": "Collection Title",
+      "default": "Featured Collection"
+    }
+],
+
+"blocks": [
+{
+  "type": "collection",
+  "name": "Collection Block",
+  "settings": [
+  {
+      "type": "image_picker",
+      "id": "gallery_image",
+      "label": "Image"
+  },
+  ]
+}
+],
+
+
+}
+
+
+{% endschema %}
+

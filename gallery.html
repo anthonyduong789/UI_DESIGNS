@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gallery Sections</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+
+  h2.section-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h2.section-title span {
+    font-weight: normal;
+  }
+
+  .arrow {
+    font-size: 1.5rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .gallery-row {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+    touch-action: pan-y;
+
+  }
+
+  .gallery-card {
+    min-width: 160px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .gallery-card img {
+    display: block;
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .gallery-label {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+
+  /* Optional: hide scrollbar for webkit browsers */
+  .gallery-row::-webkit-scrollbar {
+    display: none;
+  }
+  /* For Firefox */
+  .gallery-row {
+    scrollbar-width: none;
+  }
+</style>
+</head>
+<body>
+
+<div>
+  <h2 class="section-title">
+    Galleries near you
+    <span class="arrow">&#9654;</span>
+  </h2>
+  <div class="gallery-row">
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400&q=80" alt="British Museum" />
+      <div class="gallery-label">British Museum</div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Rijksmuseum" />
+      <div class="gallery-label">Rijksmuseum</div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1524594157369-54f09848a5f2?auto=format&fit=crop&w=400&q=80" alt="National Gallery" />
+      <div class="gallery-label">National Gallery</div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 30px;">
+  <h2 class="section-title">
+    Galleries that offer Virtual Tour
+    <span class="arrow">&#9654;</span>
+  </h2>
+  <div class="gallery-row">
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400&q=80" alt="Auckland Art Museum" />
+      <div class="gallery-label">Auckland Art Museum</div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="British Museum" />
+      <div class="gallery-label">British Museum</div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1524594157369-54f09848a5f2?auto=format&fit=crop&w=400&q=80" alt="Rijksmuseum" />
+      <div class="gallery-label">Rijksmuseum</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+

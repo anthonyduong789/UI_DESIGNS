@@ -1,0 +1,38 @@
+<h1 class="header-link">
+  Next
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-4.147-4.146a.5.5 0 1 1 .708-.708l5 5a.5.5 0 0 1 0 .708l-5 5a.5.5 0 1 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+  </svg>
+</h1>
+
+<script>
+  // Make the header clickable
+  document.querySelector('.header-link').addEventListener('click', () => {
+    window.location.href = '/nextpage';
+  });
+</script>
+
+<style>
+.header-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 2.5rem; /* prominent header size */
+  font-weight: 700;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.header-link:hover {
+  color: #0056b3;
+}
+
+.header-link svg {
+  transition: transform 0.2s ease;
+}
+
+.header-link:hover svg {
+  transform: translateX(5px);
+}
+</style>

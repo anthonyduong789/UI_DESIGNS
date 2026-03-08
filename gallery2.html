@@ -1,0 +1,110 @@
+<style>
+  .scroll-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .scroll-container {
+    display: flex;
+    overflow: hidden;
+    overflow-x: auto;
+
+    /* scroll-behavior: smooth; */
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding: 10px;
+    flex-grow: 1;
+    cursor: grab; /* shows grab cursor */
+  }
+
+  .scroll-container.active {
+    cursor: grabbing; /* grabbing cursor when dragging */
+  }
+
+  .block {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 350px;
+    height: 250px;
+    background: #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    user-select: none;
+  }
+
+  .scroll-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+  }
+</style>
+
+<div class="scroll-wrapper">
+  <button class="scroll-button" id="scroll-left">&#9664;</button>
+  <div class="scroll-container" id="scroll-container">
+    <div class="block">Block 1</div>
+    <div class="block">Block 2</div>
+    <div class="block">Block 3</div>
+    <div class="block">Block 4</div>
+    <div class="block">Block 5</div>
+  </div>
+  <button class="scroll-button" id="scroll-right">&#9654;</button>
+</div>
+
+<script>
+  const container = document.getElementById('scroll-container');
+  const scrollAmount = 250 + 16; // block width + gap
+
+  document.getElementById('scroll-left').addEventListener('click', () => {
+    container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  });
+
+  document.getElementById('scroll-right').addEventListener('click', () => {
+    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  });
+
+  // Drag to scroll functionality
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  container.addEventListener('mousedown', (e) => {
+    isDown = true;
+    container.classList.add('active');
+    startX = e.pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+    e.preventDefault(); // prevent text selection
+  });
+
+  // container.addEventListener('mouseleave', () => {
+  //   isDown = false;
+  //   container.classList.remove('active');
+  // });
+
+  // container.addEventListener('mouseup', () => {
+  //   isDown = false;
+  //   container.classList.remove('active');
+  // });
+
+  // container.addEventListener('mousemove', (e) => {
+  //   if(!isDown) return;
+  //   e.preventDefault();
+  //   const x = e.pageX - container.offsetLeft;
+  //   const walk = (x - startX) * 1; // scroll-fastness multiplier
+  //   container.scrollLeft = scrollLeft - walk;
+  // });
+</script>

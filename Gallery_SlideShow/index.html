@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Image Gallery</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21,15 16,10 5,21"/>
+                </svg>
+                <div>
+                    <h1 class="header-title">Gallery Showcase</h1>
+                    <p class="header-subtitle">Explore our curated collection of stunning photography</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Gallery Levels -->
+    <main class="main">
+        <div class="container">
+            <!-- Nature Landscapes -->
+            <section class="gallery-level">
+                <div class="level-header">
+                    <h2 class="level-title">Nature Landscapes</h2>
+                    <div class="nav-buttons">
+                        <button class="nav-btn nav-btn-prev" data-level="0">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15,18 9,12 15,6"/>
+                            </svg>
+                        </button>
+                        <button class="nav-btn nav-btn-next" data-level="0">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9,18 15,12 9,6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="gallery-container">
+                    <div class="gallery-scroll" data-level="0">
+                        <div class="image-card" data-image="0" data-level="0">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mountain landscape">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Mountain landscape</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="1" data-level="0">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/206359/pexels-photo-206359.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Forest path">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Forest path</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="2" data-level="0">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Ocean waves">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Ocean waves</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="3" data-level="0">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/814499/pexels-photo-814499.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Desert sunset">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Desert sunset</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="4" data-level="0">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/33109/fall-autumn-red-season.jpg?auto=compress&cs=tinysrgb&w=800" alt="Autumn trees">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Autumn trees</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="5" data-level="0">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/355321/pexels-photo-355321.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Winter landscape">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Winter landscape</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Urban Architecture -->
+            <section class="gallery-level">
+                <div class="level-header">
+                    <h2 class="level-title">Urban Architecture</h2>
+                    <div class="nav-buttons">
+                        <button class="nav-btn nav-btn-prev" data-level="1">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15,18 9,12 15,6"/>
+                            </svg>
+                        </button>
+                        <button class="nav-btn nav-btn-next" data-level="1">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9,18 15,12 9,6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="gallery-container">
+                    <div class="gallery-scroll" data-level="1">
+                        <div class="image-card" data-image="0" data-level="1">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/374870/pexels-photo-374870.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern building">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Modern building</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="1" data-level="1">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/273209/pexels-photo-273209.jpeg?auto=compress&cs=tinysrgb&w=800" alt="City skyline">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>City skyline</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="2" data-level="1">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/302769/pexels-photo-302769.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Bridge architecture">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Bridge architecture</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="3" data-level="1">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/415687/pexels-photo-415687.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Glass building">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Glass building</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="4" data-level="1">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Urban street">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Urban street</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="5" data-level="1">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/789380/pexels-photo-789380.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern interior">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Modern interior</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portrait Photography -->
+            <section class="gallery-level">
+                <div class="level-header">
+                    <h2 class="level-title">Portrait Photography</h2>
+                    <div class="nav-buttons">
+                        <button class="nav-btn nav-btn-prev" data-level="2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15,18 9,12 15,6"/>
+                            </svg>
+                        </button>
+                        <button class="nav-btn nav-btn-next" data-level="2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9,18 15,12 9,6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="gallery-container">
+                    <div class="gallery-scroll" data-level="2">
+                        <div class="image-card" data-image="0" data-level="2">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Portrait 1">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Portrait 1</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="1" data-level="2">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/712513/pexels-photo-712513.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Portrait 2">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Portrait 2</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="2" data-level="2">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Portrait 3">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Portrait 3</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="3" data-level="2">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/720598/pexels-photo-720598.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Portrait 4">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Portrait 4</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="4" data-level="2">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/762020/pexels-photo-762020.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Portrait 5">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Portrait 5</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-card" data-image="5" data-level="2">
+                            <div class="image-wrapper">
+                                <img src="https://images.pexels.com/photos/718978/pexels-photo-718978.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Portrait 6">
+                                <div class="image-overlay"></div>
+                                <div class="image-caption">
+                                    <p>Portrait 6</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="modal-counter" id="modalCounter">1 of 6</div>
+            <button class="modal-nav modal-nav-prev" id="modalPrev">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"/>
+                </svg>
+            </button>
+            <button class="modal-nav modal-nav-next" id="modalNext">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"/>
+                </svg>
+            </button>
+            <div class="modal-image-container">
+                <img id="modalImage" src="" alt="" class="modal-image">
+            </div>
+            <div class="modal-caption">
+                <h3 id="modalCaption">Image caption</h3>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+
+</body>
+</html>
