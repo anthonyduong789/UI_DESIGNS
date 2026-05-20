@@ -1,0 +1,316 @@
+<style>
+  :root {
+    /* backgrounds */
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f5f5f3;
+    --color-background-tertiary: #eeede8;
+    --color-background-info: #e6f1fb;
+    --color-background-success: #eaf3de;
+    --color-background-warning: #faeeda;
+    --color-background-danger: #fcebeb;
+
+    /* text */
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #5f5e5a;
+    --color-text-tertiary: #888780;
+    --color-text-info: #185fa5;
+    --color-text-success: #3b6d11;
+    --color-text-warning: #854f0b;
+    --color-text-danger: #a32d2d;
+
+    /* borders */
+    --color-border-tertiary: rgba(0, 0, 0, 0.15);
+    --color-border-secondary: rgba(0, 0, 0, 0.3);
+    --color-border-primary: rgba(0, 0, 0, 0.4);
+    --color-border-info: #185fa5;
+    --color-border-success: #3b6d11;
+    --color-border-warning: #854f0b;
+    --color-border-danger: #a32d2d;
+
+    /* typography */
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-mono: ui-monospace, monospace;
+
+    /* layout */
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+    /* --color-background-primary: #1a1a1a;
+    --color-background-secondary: #232323;
+    --color-background-tertiary: #2c2c2a;
+    --color-background-info: #042c53;
+    --color-background-success: #173404;
+    --color-background-warning: #412402;
+    --color-background-danger: #501313;
+
+    --color-text-primary: #f0efe9;
+    --color-text-secondary: #b4b2a9;
+    --color-text-tertiary: #888780;
+    --color-text-info: #85b7eb;
+    --color-text-success: #97c459;
+    --color-text-warning: #ef9f27;
+    --color-text-danger: #f09595;
+
+    --color-border-tertiary: rgba(255, 255, 255, 0.15);
+    --color-border-secondary: rgba(255, 255, 255, 0.3);
+    --color-border-primary: rgba(255, 255, 255, 0.4); */
+
+
+  }
+
+  .wrap {
+    padding: 1rem 0;
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  .section-label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    min-width: 44px;
+  }
+
+  .preset-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-secondary);
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+  }
+
+  .preset-btn.active {
+    background: var(--color-background-secondary);
+    border-color: var(--color-border-primary);
+    font-weight: 500;
+  }
+
+  .info-bar {
+    margin: 10px 0 1rem;
+    padding: 10px 14px;
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-secondary);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .info-bar span {
+    display: flex;
+    gap: 6px;
+  }
+
+  .info-label {
+    color: var(--color-text-tertiary);
+  }
+
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    margin: 12px 0;
+  }
+
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .item-row {
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-primary);
+    overflow: hidden;
+  }
+
+  .item-header {
+    padding: 12px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    user-select: none;
+  }
+
+  .item-header:hover {
+    background: var(--color-background-secondary);
+  }
+
+  .chevron {
+    font-size: 16px;
+    color: var(--color-text-secondary);
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+
+  .item-row.open .chevron {
+    transform: rotate(180deg);
+  }
+
+  .item-content {
+    height: 0;
+    overflow: hidden;
+    padding: 0 16px;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+    interpolate-size: allow-keywords;
+  }
+
+  .item-row.open .item-content {
+    height: fit-content;
+    padding: 0 16px 14px;
+  }
+
+  .toggle-all {
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-secondary);
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only">CSS transition playground with separate open and close presets</h2>
+
+  <div class="row">
+    <span class="section-label">open</span>
+    <div id="openPresets" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+  </div>
+  <div class="row">
+    <span class="section-label">close</span>
+    <div id="closePresets" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+  </div>
+
+  <div class="info-bar" id="infoBar">
+    <span><span class="info-label">open:</span> <span id="openInfo">—</span></span>
+    <span><span class="info-label">close:</span> <span id="closeInfo">—</span></span>
+  </div>
+
+  <button class="toggle-all" id="toggleAll">open all</button>
+  <div class="items" id="items" style="margin-top:10px;"></div>
+</div>
+
+<script>
+  const presets = [
+    { label: 'current', open: 'height 0.38s cubic-bezier(0.4,0,0.2,1), padding 0.3s', close: 'height 0.38s cubic-bezier(0.4,0,0.2,1), padding 0.3s' },
+    { label: 'snappy', open: 'height 0.22s cubic-bezier(0.4,0,0.2,1), padding 0.22s cubic-bezier(0.4,0,0.2,1)', close: 'height 0.22s cubic-bezier(0.4,0,0.2,1), padding 0.22s cubic-bezier(0.4,0,0.2,1)' },
+    { label: 'springy', open: 'height 0.5s cubic-bezier(0.34,1.56,0.64,1), padding 0.4s cubic-bezier(0.34,1.56,0.64,1)', close: 'height 0.5s cubic-bezier(0.34,1.56,0.64,1), padding 0.4s cubic-bezier(0.34,1.56,0.64,1)' },
+    { label: 'expo out', open: 'height 0.45s cubic-bezier(0.16,1,0.3,1), padding 0.4s cubic-bezier(0.16,1,0.3,1)', close: 'height 0.45s cubic-bezier(0.16,1,0.3,1), padding 0.4s cubic-bezier(0.16,1,0.3,1)' },
+    { label: 'soft', open: 'height 0.5s ease-in-out, padding 0.5s ease-in-out', close: 'height 0.5s ease-in-out, padding 0.5s ease-in-out' },
+    { label: 'staggered', open: 'height 0.3s cubic-bezier(0.4,0,0.2,1), padding 0.3s cubic-bezier(0.4,0,0.2,1) 0.05s', close: 'height 0.3s cubic-bezier(0.4,0,0.2,1), padding 0.3s cubic-bezier(0.4,0,0.2,1) 0.05s' },
+    { label: 'slow', open: 'height 0.6s cubic-bezier(0.0,0.0,0.2,1), padding 0.5s ease', close: 'height 0.6s cubic-bezier(0.0,0.0,0.2,1), padding 0.5s ease' },
+    { label: 'instant', open: 'height 0.08s linear, padding 0.08s linear', close: 'height 0.08s linear, padding 0.08s linear' },
+  ];
+
+  const closePresets = [
+    { label: 'same as open', css: null },
+    { label: 'fast snap', css: 'height 0.15s cubic-bezier(0.4,0,1,1), padding 0.12s ease-in' },
+    { label: 'ease in', css: 'height 0.25s ease-in, padding 0.2s ease-in' },
+    { label: 'expo in', css: 'height 0.2s cubic-bezier(0.7,0,0.84,0), padding 0.18s cubic-bezier(0.7,0,0.84,0)' },
+    { label: 'instant', css: 'height 0.06s linear, padding 0.06s linear' },
+  ];
+
+  const sampleContent = [
+    'fzfMatch: characters must appear in order as a subsequence. Rewards consecutive runs, prefix matches, and word-boundary hits.',
+    'levenshteinMatch: measures edit distance between the pattern and substrings. More typo-tolerant, works even when characters are out of order.',
+    'trigramMatch: splits strings into 3-character chunks and measures overlap. Great for longer strings and partial matches across word boundaries.',
+  ];
+
+  let selectedOpen = 0;
+  let selectedClose = 0;
+  let allOpen = false;
+
+  const openPresetsEl = document.getElementById('openPresets');
+  const closePresetsEl = document.getElementById('closePresets');
+  const openInfoEl = document.getElementById('openInfo');
+  const closeInfoEl = document.getElementById('closeInfo');
+  const itemsEl = document.getElementById('items');
+  const toggleAllBtn = document.getElementById('toggleAll');
+
+  function getOpenCss() { return presets[selectedOpen].open; }
+  function getCloseCss() { return closePresets[selectedClose].css ?? getOpenCss(); }
+
+  function shortCss(css) { return css.replace(/cubic-bezier\(([^)]+)\)/g, (_, v) => 'cubic-bezier(' + v + ')').slice(0, 60) + (css.length > 60 ? '…' : ''); }
+
+  function updateInfo() {
+    openInfoEl.textContent = shortCss(getOpenCss());
+    closeInfoEl.textContent = closePresets[selectedClose].css ? shortCss(getCloseCss()) : '(same as open)';
+  }
+
+  function renderButtons() {
+    openPresetsEl.innerHTML = '';
+    presets.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'preset-btn' + (i === selectedOpen ? ' active' : '');
+      btn.textContent = p.label;
+      btn.addEventListener('click', () => { selectedOpen = i; renderButtons(); updateInfo(); });
+      openPresetsEl.appendChild(btn);
+    });
+    closePresetsEl.innerHTML = '';
+    closePresets.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'preset-btn' + (i === selectedClose ? ' active' : '');
+      btn.textContent = p.label;
+      btn.addEventListener('click', () => { selectedClose = i; renderButtons(); updateInfo(); });
+      closePresetsEl.appendChild(btn);
+    });
+  }
+
+  function setTransition(el, isOpen) {
+    el.style.transition = isOpen ? getOpenCss() : getCloseCss();
+  }
+
+  function renderItems() {
+    itemsEl.innerHTML = '';
+    sampleContent.forEach((content) => {
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+      <div class="item-header">
+        <span style="font-size:14px;">${content.split(':')[0]}</span>
+        <i class="ti ti-chevron-down chevron" aria-hidden="true"></i>
+      </div>
+      <div class="item-content">${content}</div>
+    `;
+      const contentEl = row.querySelector('.item-content');
+      row.querySelector('.item-header').addEventListener('click', () => {
+        const opening = !row.classList.contains('open');
+        setTransition(contentEl, opening);
+        row.classList.toggle('open');
+      });
+      itemsEl.appendChild(row);
+    });
+  }
+
+  toggleAllBtn.addEventListener('click', () => {
+    allOpen = !allOpen;
+    document.querySelectorAll('.item-row').forEach(row => {
+      const contentEl = row.querySelector('.item-content');
+      setTransition(contentEl, allOpen);
+      row.classList.toggle('open', allOpen);
+    });
+    toggleAllBtn.textContent = allOpen ? 'close all' : 'open all';
+  });
+
+  renderButtons();
+  renderItems();
+  updateInfo();
+</script>

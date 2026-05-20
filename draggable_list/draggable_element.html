@@ -1,0 +1,226 @@
+
+<style>
+  :root {
+    --color-text-primary: #cf6c6c;
+    --color-text-secondary: #b4b2a9;
+    --color-text-tertiary: #888780;
+    --color-text-info: #85b7eb;
+    --color-text-success: #97c459;
+    --color-text-warning: #ef9f27;
+    --color-text-danger: #f09595;
+
+    --color-border-tertiary: rgba(255, 255, 255, 0.15);
+    --color-border-secondary: rgba(255, 255, 255, 0.3);
+    --color-border-primary: rgba(255, 255, 255, 0.4);
+  }
+  .scene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 420px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hint {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    pointer-events: none;
+    transition: opacity 0.4s;
+    white-space: nowrap;
+  }
+  .card {
+    width: 140px;
+    height: 140px;
+    border-radius: 20px;
+    background: var(--color-text-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: grab;
+    user-select: none;
+    position: absolute;
+    touch-action: none;
+    will-change: transform;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .card-icon {
+    font-size: 32px;
+    color: var(--color-text-secondary);
+    transition: color 0.2s;
+    pointer-events: none;
+  }
+  .card-label {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    transition: color 0.2s;
+    pointer-events: none;
+  }
+  .shadow-el {
+    width: 100px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.08);
+    position: absolute;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    filter: blur(4px);
+  }
+</style>
+
+<h2 class="sr-only">Draggable card — pick up and drag to move</h2>
+
+<div class="scene" id="scene">
+  <div class="shadow-el" id="shadow"></div>
+  <div class="card" id="card">
+    <i class="ti ti-drag-drop card-icon" id="icon" aria-hidden="true"></i>
+    <span class="card-label" id="label">grab me</span>
+  </div>
+  <p class="hint" id="hint">click and drag anywhere</p>
+</div>
+
+<script>
+const card = document.getElementById('card');
+const shadow = document.getElementById('shadow');
+const icon = document.getElementById('icon');
+const label = document.getElementById('label');
+const hint = document.getElementById('hint');
+const scene = document.getElementById('scene');
+
+let dragging = false;
+let animFrame = null;
+
+let pos = { x: 0, y: 0 };
+let vel = { x: 0, y: 0 };
+let mouse = { x: 0, y: 0 };
+let lastMouse = { x: 0, y: 0 };
+let offset = { x: 0, y: 0 };
+let restPos = { x: 0, y: 0 };
+
+let grabbed = false;
+let releaseTime = null;
+let releasePos = { x: 0, y: 0 };
+let releaseVel = { x: 0, y: 0 };
+
+const STIFFNESS = 0.18;
+const DAMPING = 0.72;
+const GRAVITY_PULL = 0.04;
+
+function getSceneRect() { return scene.getBoundingClientRect(); }
+
+function setCardTransform(x, y, scale, rotate) {
+  card.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${scale}) rotate(${rotate}deg)`;
+}
+
+function setShadow(x, y, lift) {
+  const opacity = Math.max(0, 0.10 - lift * 0.003);
+  const scaleX = 1 - lift * 0.003;
+  shadow.style.opacity = opacity;
+  shadow.style.transform = `translate(calc(-50% + ${x * 0.3}px), calc(-50% + ${y * 0.3}px)) scaleX(${Math.max(0.3, scaleX)})`;
+}
+
+let lift = 0;
+let targetLift = 0;
+let rotation = 0;
+
+function animate() {
+  animFrame = requestAnimationFrame(animate);
+
+  if (dragging) {
+    const dx = mouse.x - pos.x;
+    const dy = mouse.y - pos.y;
+    vel.x = vel.x * 0.6 + dx * 0.4;
+    vel.y = vel.y * 0.6 + dy * 0.4;
+    pos.x += (mouse.x - pos.x) * 0.22;
+    pos.y += (mouse.y - pos.y) * 0.22;
+
+    const speed = Math.sqrt(vel.x ** 2 + vel.y ** 2);
+    rotation = rotation * 0.85 + (vel.x * 0.15);
+
+    targetLift = 28;
+    lift += (targetLift - lift) * 0.12;
+
+    setCardTransform(pos.x, pos.y, 1.08, rotation);
+    setShadow(pos.x, pos.y + 60, lift);
+
+  } else {
+    const tx = restPos.x;
+    const ty = restPos.y;
+
+    const fx = (tx - pos.x) * STIFFNESS;
+    const fy = (ty - pos.y) * STIFFNESS;
+
+    vel.x = (vel.x + fx) * DAMPING;
+    vel.y = (vel.y + fy) * DAMPING;
+    pos.x += vel.x;
+    pos.y += vel.y;
+
+    rotation = rotation * 0.88;
+
+    targetLift = 0;
+    lift += (targetLift - lift) * 0.1;
+
+    const scale = 1 + lift * 0.001;
+    setCardTransform(pos.x, pos.y, scale, rotation);
+    setShadow(pos.x, pos.y + 60, lift);
+  }
+
+  lastMouse = { ...mouse };
+}
+
+function onPointerDown(e) {
+  e.preventDefault();
+  const rect = getSceneRect();
+  const cx = e.clientX - rect.left - rect.width / 2;
+  const cy = e.clientY - rect.top - rect.height / 2;
+  mouse = { x: cx, y: cy };
+  dragging = true;
+  grabbed = true;
+
+  card.style.cursor = 'grabbing';
+  card.style.transition = 'box-shadow 0.15s, border-color 0.15s';
+  card.style.borderColor = 'var(--color-border-primary)';
+  icon.style.color = 'var(--color-text-primary)';
+  label.textContent = 'holding';
+  label.style.color = 'var(--color-text-primary)';
+  hint.style.opacity = '0';
+
+  vel = { x: 0, y: 0 };
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
+}
+
+function onPointerMove(e) {
+  if (!dragging) return;
+  const rect = getSceneRect();
+  mouse = {
+    x: e.clientX - rect.left - rect.width / 2,
+    y: e.clientY - rect.top - rect.height / 2
+  };
+}
+
+function onPointerUp(e) {
+  dragging = false;
+  card.style.cursor = 'grab';
+  card.style.transition = 'box-shadow 0.3s, border-color 0.3s';
+  card.style.borderColor = '';
+  icon.className = 'ti ti-drag-drop card-icon';
+  icon.style.color = '';
+  label.textContent = 'grab me';
+  label.style.color = '';
+  hint.style.opacity = '1';
+
+  window.removeEventListener('pointermove', onPointerMove);
+  window.removeEventListener('pointerup', onPointerUp);
+}
+
+card.addEventListener('pointerdown', onPointerDown);
+animate();
+setShadow(0, 60, 0);
+</script>

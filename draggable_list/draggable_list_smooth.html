@@ -1,0 +1,264 @@
+
+<style>
+* { box-sizing: border-box; }
+.drag-list { list-style: none; margin: 0; padding: 0; position: relative; }
+.drag-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  cursor: grab;
+  user-select: none;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  transition: transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.18s;
+  will-change: transform;
+}
+.drag-item.is-dragging {
+  opacity: 0;
+  /* pointer-events: none; */
+  cursor: grabbing;
+}
+.drag-ghost-el {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-primary);
+  border-radius: var(--border-radius-md);
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+  opacity: 0.97;
+}
+.handle { color: var(--color-text-tertiary); font-size: 16px; flex-shrink: 0; letter-spacing: -2px; cursor: grab; }
+.item-label { flex: 1; }
+.item-index {
+  font-size: 11px; color: var(--color-text-tertiary);
+  background: var(--color-background-secondary);
+  border-radius: 4px; padding: 2px 6px;
+  min-width: 20px; text-align: center;
+}
+.output-box {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 16px;
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+.section-label { font-size: 12px; color: var(--color-text-tertiary); margin: 16px 0 6px; }
+.tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+.tab {
+  font-size: 13px; padding: 4px 14px;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  cursor: pointer; background: transparent;
+  color: var(--color-text-secondary);
+}
+.tab.active {
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-primary);
+}
+.saved-flash {
+  font-size: 12px; color: var(--color-text-success);
+  opacity: 0; transition: opacity 0.3s;
+  margin-left: 8px;
+}
+.saved-flash.show { opacity: 1; }
+</style>
+
+<h2 class="sr-only">Draggable reorderable list with smooth animations</h2>
+
+<div style="padding: 1rem 0;">
+  <div style="display:flex; align-items:center; margin-bottom:14px;">
+    <div class="tabs" style="margin-bottom:0;">
+      <button class="tab active" onclick="setMode('list')">List</button>
+      <button class="tab" onclick="setMode('dict')">Dict</button>
+    </div>
+    <span class="saved-flash" id="savedFlash">Saved</span>
+  </div>
+
+  <ul class="drag-list" id="dragList"></ul>
+
+  <p class="section-label">Output</p>
+  <div class="output-box" id="output"></div>
+</div>
+
+<script>
+let items = [
+  { id: 1, label: 'First item' },
+  { id: 2, label: 'Second item' },
+  { id: 3, label: 'Third item' },
+  { id: 4, label: 'Fourth item' },
+  { id: 5, label: 'Fifth item' },
+];
+let mode = 'list';
+let dragIdx = null;
+let hoverIdx = null;
+let ghostEl = null;
+let offsetX = 0, offsetY = 0;
+let itemHeight = 0;
+
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.textContent.toLowerCase() === m));
+  renderOutput();
+}
+
+/**
+ * Returns an array of ordered indices after moving an item from a specified index to another index.
+ *
+ * @param {number} from - The index of the item that was moved.
+ * @param {number} to - The new index of the item that was moved.
+ * @return {number[]} An array of ordered indices after the move.
+ */
+function getOrderedIndices(from, to) {
+  const arr = items.map((_, i) => i);
+  console.log("array original", arr);
+  const [moved] = arr.splice(from, 1);
+  console.log("moved", moved);
+  arr.splice(to, 0, moved);
+  console.log("array final", arr);
+  return arr;
+}
+
+function applyTransforms(from, to) {
+  const lis = document.querySelectorAll('.drag-item');
+  const order = getOrderedIndices(from, to);
+
+  lis.forEach((li, origIdx) => {
+    if (origIdx === from) {
+      li.style.transform = '';
+      return;
+    }
+    const newPos = order.indexOf(origIdx);
+    const shift = newPos - origIdx;
+    li.style.transform = shift !== 0 ? `translateY(${shift * itemHeight}px)` : '';
+  });
+}
+
+function clearTransforms() {
+  document.querySelectorAll('.drag-item').forEach(li => li.style.transform = '');
+}
+
+function render() {
+  console.log(items);
+  const list = document.getElementById('dragList');
+  list.innerHTML = '';
+  items.forEach((item, idx) => {
+    const li = document.createElement('li');
+    li.className = 'drag-item';
+    li.dataset.idx = idx;
+    li.innerHTML = `
+      <span class="handle">&#8942;&#8942;</span>
+      <span class="item-label">${item.label}</span>
+      <span class="item-index" id="idx-${idx}">${idx}</span>
+    `;
+    li.addEventListener('mousedown', e => startDrag(e, idx, li));
+    list.appendChild(li);
+  });
+  itemHeight = list.querySelector('.drag-item') ? list.querySelector('.drag-item').offsetHeight + 8 : 48;
+  renderOutput();
+}
+
+function updateIndexLabels(from, to) {
+  const order = getOrderedIndices(from, to);
+  items.forEach((_, origIdx) => {
+    const el = document.getElementById('idx-' + origIdx);
+    if (el) el.textContent = order.indexOf(origIdx);
+  });
+}
+
+function renderOutput(previewFrom, previewTo) {
+  const el = document.getElementById('output');
+  let ordered = [...items];
+  if (previewFrom != null && previewTo != null) {
+    const moved = ordered.splice(previewFrom, 1)[0];
+    ordered.splice(previewTo, 0, moved);
+  }
+  if (mode === 'list') {
+    el.textContent = JSON.stringify(ordered.map(i => i.label), null, 2);
+  } else {
+    const dict = {};
+    ordered.forEach((item, idx) => { dict[idx] = item.label; });
+    el.textContent = JSON.stringify(dict, null, 2);
+  }
+}
+
+function startDrag(e, idx, liEl) {
+  dragIdx = idx;
+  hoverIdx = idx;
+  itemHeight = liEl.offsetHeight + 8;
+
+  const rect = liEl.getBoundingClientRect();
+  console.log(rect);
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+
+  ghostEl = document.createElement('div');
+  ghostEl.className = 'drag-ghost-el';
+  ghostEl.style.width = liEl.offsetWidth + 'px';
+  ghostEl.innerHTML = `<span class="handle">&#8942;&#8942;</span><span style="flex:1">${items[idx].label}</span>`;
+  ghostEl.style.left = (e.clientX - offsetX) + 'px';
+  ghostEl.style.top = (e.clientY - offsetY) + 'px';
+  document.body.appendChild(ghostEl);
+  liEl.classList.add('is-dragging');
+
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+}
+
+function onMouseMove(e) {
+  if (!ghostEl) return;
+  ghostEl.style.left = (e.clientX - offsetX) + 'px';
+  ghostEl.style.top = (e.clientY - offsetY) + 'px';
+
+  const list = document.getElementById('dragList');
+  const listRect = list.getBoundingClientRect();
+  const relY = e.clientY - listRect.top;
+  let newHover = Math.floor(relY / itemHeight);
+  console.log('newHover', newHover);
+  newHover = Math.max(0, Math.min(items.length - 1, newHover));
+  if (newHover !== hoverIdx) {
+    hoverIdx = newHover;
+    applyTransforms(dragIdx, hoverIdx);
+    updateIndexLabels(dragIdx, hoverIdx);
+    renderOutput(dragIdx, hoverIdx);
+  }
+}
+
+function onMouseUp() {
+  window.removeEventListener('mousemove', onMouseMove);
+  window.removeEventListener('mouseup', onMouseUp);
+
+  if (ghostEl) { ghostEl.remove(); ghostEl = null; }
+
+  if (dragIdx !== null && hoverIdx !== null && dragIdx !== hoverIdx) {
+    const moved = items.splice(dragIdx, 1)[0];
+    items.splice(hoverIdx, 0, moved);
+    flashSaved();
+  }
+
+  dragIdx = null;
+  hoverIdx = null;
+  render();
+}
+
+function flashSaved() {
+  const el = document.getElementById('savedFlash');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1200);
+}
+
+render();
+</script>

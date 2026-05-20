@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition:
+        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.2s ease,
+        scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-edit   { background: #e0e0e0; color: #333; }
+    .btn-cancel { background: #fde8e8; color: #ef4444; transform: translateY(20px); opacity: 0; scale: 0.7; pointer-events: none; }
+    .btn-save   { background: #e8fdf0; color: #22c55e; transform: translateY(20px); opacity: 0; scale: 0.7; pointer-events: none; }
+
+    .editing .btn-edit   { transform: translateY(-20px); opacity: 0; scale: 0.7; pointer-events: none; }
+    .editing .btn-cancel { transform: translateY(0); opacity: 1; scale: 1; pointer-events: all; }
+    .editing .btn-save   { transform: translateY(0); opacity: 1; scale: 1; pointer-events: all; }
+  </style>
+</head>
+<body>
+  <div class="btn-group" id="g">
+    <button class="btn btn-edit"   onclick="document.getElementById('g').classList.add('editing')">✏️</button>
+    <button class="btn btn-cancel" onclick="document.getElementById('g').classList.remove('editing')">✕</button>
+    <button class="btn btn-save"   onclick="document.getElementById('g').classList.remove('editing')">✓</button>
+  </div>
+</body>
+</html>

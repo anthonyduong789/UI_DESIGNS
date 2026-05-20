@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="myElement" style="width: 200px; height: 200px; background-color: lightblue;">
+        Hover or click me!
+    </div>
+</body>
+<script>
+    function simulatePointerEvents() {
+        const moveEvent = new PointerEvent("pointermove");
+        const downEvent = new PointerEvent("pointerdown", {
+            pointerId: 1,
+            bubbles: true,
+            cancelable: true,
+            pointerType: "touch",
+            width: 100,
+            height: 100,
+            isPrimary: true,
+        });
+
+        // Do something with the events
+        // For example, you can dispatch them to an element
+        const element = document.getElementById("myElement");
+        element.dispatchEvent(moveEvent);
+        element.dispatchEvent(downEvent);
+    }
+
+    // Call the function to simulate the pointer events
+    simulatePointerEvents();
+</script>
+
+</html>

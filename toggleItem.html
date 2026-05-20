@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expand / Collapse</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0ece4;
+      font-family: 'DM Sans', sans-serif;
+      padding: 2rem;
+    }
+
+    .accordion {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item {
+      background: #fff;
+      border: 1.5px solid #e0d9ce;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s;
+    }
+
+    .item:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.09); }
+
+    .toggle {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .toggle-label {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      color: #1a1612;
+      letter-spacing: 0.01em;
+    }
+
+    .icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #f0ece4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+
+    .icon svg {
+      width: 14px;
+      height: 14px;
+      stroke: #6b5e4e;
+      stroke-width: 2.5;
+      fill: none;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+
+    .item.open .icon {
+      background: #1a1612;
+      transform: rotate(0deg);
+    }
+
+    .item.open .icon svg {
+      stroke: #f0ece4;
+      transform: rotate(180deg);
+    }
+
+    .content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.38s cubic-bezier(.4,0,.2,1), padding 0.3s;
+      padding: 0 22px;
+    }
+
+    .item.open .content {
+      max-height: 400px;
+      padding: 0 22px 20px;
+    }
+
+    .content p {
+      color: #5a4f44;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      border-top: 1px solid #ece7df;
+      padding-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="accordion">
+
+    <div class="item">
+      <button class="toggle" onclick="toggleItem(this)">
+        <span class="toggle-label">What is this component?</span>
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="content">
+        <p>This is a smooth expand/collapse accordion built with plain HTML, CSS, and vanilla JavaScript — no libraries or frameworks required.</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <button class="toggle" onclick="toggleItem(this)">
+        <span class="toggle-label">How does the animation work?</span>
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="content">
+        <p>The smooth slide uses a CSS <code>max-height</code> transition. When a section opens, the max-height expands from 0 to a large value, creating a fluid reveal effect.</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <button class="toggle" onclick="toggleItem(this)">
+        <span class="toggle-label">Can multiple sections be open?</span>
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="content">
+        <p>Yes! Each section toggles independently. Click any header to expand or collapse it without affecting the others.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleItem(btn) {
+      const item = btn.closest('.item');
+      item.classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>
